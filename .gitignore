@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/
+
+# Learning exercises
+exercises/
+
+# Cache
+.ruff_cache/
+.pytest_cache/
