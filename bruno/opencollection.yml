@@ -1,0 +1,50 @@
+opencollection: 1.0.0
+
+info:
+  name: Mini Forum
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  variables:
+    - name: base_url
+      value: http://127.0.0.1:8000
+    - name: token_user_a
+      value: "{{process.env.TOKEN_USER_A}}"
+    - name: token_user_b
+      value: "{{process.env.TOKEN_USER_B}}"
+    - name: post_id
+      value: "{{process.env.POST_ID}}"
+    - name: comment_id
+      value: "{{process.env.COMMENT_ID}}"
+    - name: demo_suffix
+      value: "01"
+    - name: password_user_a
+      value: "{{process.env.PASSWORD_USER_A}}"
+    - name: password_user_b
+      value: "{{process.env.PASSWORD_USER_B}}"
+    - name: admin_username
+      value: "{{process.env.ADMIN_USERNAME}}"
+    - name: admin_password
+      value: "{{process.env.ADMIN_PASSWORD}}"
+    - name: token_admin
+      value: "{{process.env.TOKEN_ADMIN}}"
+
+docs:
+  content: Run Accounts, then Forum. Choose Owner cleanup or Admin cleanup for that run's records. For a new run, set a fresh demo_suffix or skip registration and reuse the existing accounts.
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

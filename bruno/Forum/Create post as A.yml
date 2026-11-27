@@ -1,0 +1,45 @@
+info:
+  name: Create post as A
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{base_url}}/api/posts/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_user_a}}
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Hello, Mini Forum",
+        "content": "A first post from demo user A."
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 201", function () {
+            expect(res.getStatus()).to.equal(201);
+        });
+        if (res.getStatus() === 201) {
+            const value = res.getBody().id;
+            test("Response has a valid id", function () {
+                expect(value).to.be.a("number");
+            });
+            bru.setVar("post_id", value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

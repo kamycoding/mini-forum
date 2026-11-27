@@ -1,0 +1,45 @@
+info:
+  name: Create comment as B
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{base_url}}/api/comments/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_user_b}}
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "post": {{post_id}},
+        "text": "Thanks for starting this thread."
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 201", function () {
+            expect(res.getStatus()).to.equal(201);
+        });
+        if (res.getStatus() === 201) {
+            const value = res.getBody().id;
+            test("Response has a valid id", function () {
+                expect(value).to.be.a("number");
+            });
+            bru.setVar("comment_id", value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -1,0 +1,29 @@
+info:
+  name: Delete post as A
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{base_url}}/api/posts/{{post_id}}/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_user_a}}
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 204", function () {
+            expect(res.getStatus()).to.equal(204);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

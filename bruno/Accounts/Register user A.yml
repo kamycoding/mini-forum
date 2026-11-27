@@ -1,0 +1,43 @@
+info:
+  name: Register user A
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/auth/register/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "username": "mini_forum_demo_a_{{demo_suffix}}",
+        "password": "{{password_user_a}}",
+        "email": "mini-forum-a-{{demo_suffix}}@example.com",
+        "repeated_password": "{{password_user_a}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 201", function () {
+            expect(res.getStatus()).to.equal(201);
+        });
+        test("Response omits passwords", function () {
+            const account = res.getBody();
+            expect(account).to.not.have.property("password");
+            expect(account).to.not.have.property("repeated_password");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

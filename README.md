@@ -69,7 +69,7 @@ The API runs at `http://127.0.0.1:8000/` and Django Admin at `http://127.0.0.1:8
 - Create, read, update and delete posts and comments
 - Authors can change their own entries; admins (`is_staff`) can change any entry
 - Management of posts and comments in Django Admin
-- Automated API tests and a Postman collection
+- Automated API tests and a Bruno collection
 
 ## Tech stack
 
@@ -97,7 +97,7 @@ mini-forum/
 │   ├── admin.py
 │   ├── models.py       # Post and Comment
 │   └── tests.py
-├── postman/            # Postman collection
+├── bruno/              # Bruno OpenCollection
 ├── .env.example
 ├── manage.py
 └── requirements.txt
@@ -176,13 +176,13 @@ python manage.py makemigrations --check --dry-run
 python manage.py test
 ```
 
-### Postman
+### Bruno
 
-1. Import [the collection](postman/Mini-Forum.postman_collection.json). `base_url` defaults to `http://127.0.0.1:8000`.
-2. Run the **Accounts** folder, then **Forum**. Tokens and new IDs are saved as collection variables. If you run the folders separately in the Runner, enable **Keep variable values**.
-3. Run **Owner cleanup** to delete the records as their authors, or **Admin cleanup** to delete them as an admin. Admin cleanup needs `admin_username` and `admin_password` in a local Postman environment.
+1. In Bruno 4.3.0, choose **Open Collection** and select the `bruno/` folder. Select **Development** in the environment dropdown.
+2. Copy the values needed for your local demo into `bruno/.env` using the variable names below. This file is ignored by Git. Set the collection variable `demo_suffix` when creating new accounts; to reuse existing users, skip registration.
+3. Run **Accounts**, then **Forum**. Login tokens and created post/comment IDs are stored as runtime variables for subsequent requests. Run **Owner cleanup**, or log in as an admin and run **Admin cleanup**. Use the same Bruno session for the workflow.
 
-For new demo accounts, change `demo_suffix`. To reuse existing ones, skip the two registration requests. Do not commit or share an export that contains real credentials or tokens.
+`bruno/.env` supports `PASSWORD_USER_A`, `PASSWORD_USER_B`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `TOKEN_USER_A`, `TOKEN_USER_B`, `TOKEN_ADMIN`, `POST_ID`, and `COMMENT_ID`. Values can be left empty until needed; the login and creation requests populate runtime values. Never commit this file or real credentials.
 
 ## Notes and limitations
 

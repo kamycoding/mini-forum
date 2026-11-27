@@ -1,0 +1,29 @@
+info:
+  name: Delete B's comment as admin
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{base_url}}/api/comments/{{comment_id}}/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_admin}}
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 204", function () {
+            expect(res.getStatus()).to.equal(204);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

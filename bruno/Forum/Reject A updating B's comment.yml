@@ -1,0 +1,37 @@
+info:
+  name: Reject A updating B's comment
+  type: http
+  seq: 12
+
+http:
+  method: PUT
+  url: "{{base_url}}/api/comments/{{comment_id}}/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_user_a}}
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "text": "Thanks for the updated introduction."
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 403", function () {
+            expect(res.getStatus()).to.equal(403);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -1,0 +1,43 @@
+info:
+  name: Log in as user A
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{base_url}}/auth/login/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "username": "mini_forum_demo_a_{{demo_suffix}}",
+        "password": "{{password_user_a}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 200", function () {
+            expect(res.getStatus()).to.equal(200);
+        });
+        if (res.getStatus() === 200) {
+            const value = res.getBody().token;
+            test("Response has a valid token", function () {
+                expect(value).to.be.a("string").and.not.be.empty;
+            });
+            bru.setVar("token_user_a", value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

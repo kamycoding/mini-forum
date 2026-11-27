@@ -1,0 +1,32 @@
+info:
+  name: Read comment as A
+  type: http
+  seq: 11
+
+http:
+  method: GET
+  url: "{{base_url}}/api/comments/{{comment_id}}/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Authorization
+      value: Token {{token_user_a}}
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 200", function () {
+            expect(res.getStatus()).to.equal(200);
+        });
+        test("Returns the requested object", function () {
+            expect(res.getBody().id).to.eql(Number(bru.getVar("comment_id")));
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

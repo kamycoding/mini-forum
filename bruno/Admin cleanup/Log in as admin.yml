@@ -1,0 +1,43 @@
+info:
+  name: Log in as admin
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/auth/login/"
+  headers:
+    - name: Accept
+      value: application/json
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "username": "{{admin_username}}",
+        "password": "{{admin_password}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Returns HTTP 200", function () {
+            expect(res.getStatus()).to.equal(200);
+        });
+        if (res.getStatus() === 200) {
+            const value = res.getBody().token;
+            test("Response has a valid token", function () {
+                expect(value).to.be.a("string").and.not.be.empty;
+            });
+            bru.setVar("token_admin", value);
+        }
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
