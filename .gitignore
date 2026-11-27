@@ -6,8 +6,10 @@ __pycache__/
 *.py[cod]
 
 # Django
-db.sqlite3
-db.sqlite3-journal
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
 
 # Environment variables
 .env
@@ -19,6 +21,7 @@ db.sqlite3-journal
 
 # Learning exercises
 exercises/
+learning/
 
 # Cache
 .ruff_cache/
