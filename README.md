@@ -1,12 +1,67 @@
 # Mini Forum
 
+A small forum REST API built with Django REST Framework as a Developer Akademie assignment. Registered users write posts and comments, and token authentication with object-level permissions controls who can change them.
+
 ![Python 3.14](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)
 ![Django 5.2](https://img.shields.io/badge/Django-5.2-092E20?logo=django&logoColor=white)
 ![DRF 3.18](https://img.shields.io/badge/DRF-3.18-A30000)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white)
 ![uv](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=white)
 
-A small forum REST API built with Django REST Framework as a Developer Akademie assignment. Registered users write posts and comments, and token authentication with object-level permissions controls who can change them.
+## Quickstart
+
+**Prerequisites** — Git and [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/kamycoding/mini-forum.git
+cd mini-forum
+uv venv --python 3.14
+```
+
+Activate the virtual environment on Linux or macOS:
+
+```bash
+source .venv/bin/activate
+```
+
+On Windows (PowerShell):
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Install the dependencies and create the local settings file:
+
+```bash
+uv pip sync requirements.txt
+cp .env.example .env
+```
+
+Generate a secret key:
+
+```bash
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+In `.env`, paste it into `SECRET_KEY` inside single quotes and keep `DEBUG=True` for local development. Then run:
+
+```bash
+python manage.py migrate
+```
+
+Creating a superuser is optional for API-only use and required for the Django Admin demonstration.
+
+```bash
+python manage.py createsuperuser
+```
+
+Start the development server.
+
+```bash
+python manage.py runserver
+```
+
+The API runs at `http://127.0.0.1:8000/` and Django Admin at `http://127.0.0.1:8000/admin/`.
 
 ## Features
 
@@ -47,51 +102,6 @@ mini-forum/
 ├── manage.py
 └── requirements.txt
 ```
-
-## Setup
-
-Install [uv](https://docs.astral.sh/uv/), then clone the repository:
-
-```bash
-git clone https://github.com/kamycoding/mini-forum.git
-cd mini-forum
-uv venv --python 3.14
-```
-
-Activate the virtual environment on Linux or macOS:
-
-```bash
-source .venv/bin/activate
-```
-
-On Windows (PowerShell):
-
-```powershell
-.venv\Scripts\activate
-```
-
-Install the dependencies and create the local settings file:
-
-```bash
-uv pip sync requirements.txt
-cp .env.example .env
-```
-
-Generate a secret key:
-
-```bash
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-```
-
-In `.env`, paste it into `SECRET_KEY` inside single quotes and keep `DEBUG=True` for local development. Then run:
-
-```bash
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
-
-The API runs at `http://127.0.0.1:8000/` and Django Admin at `http://127.0.0.1:8000/admin/`.
 
 ## API
 
@@ -158,6 +168,7 @@ A comment takes the ID of an existing post and `text`:
 ## Tests
 
 Last verified locally on 27 November 2026: all 38 automated tests passed.
+They cover authentication, validation, CRUD, ownership permissions, admin permissions, and model relationships.
 
 ```bash
 python manage.py check
